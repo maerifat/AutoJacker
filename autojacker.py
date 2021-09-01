@@ -1,3 +1,9 @@
+# -*- coding: utf-8 -*-
+import os
+import sys
+if sys.version_info < (3,0,0):
+    print(' AutoJack requires Python 3, while Python ' + str(sys.version[0] + ' was detected. Terminating... '))
+    sys.exit(1)
 import subprocess
 import requests
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
@@ -10,8 +16,6 @@ from colorama import Fore, Back, Style
 tato= """
 
 
-
-
      ▄████████ ███    █▄      ███      ▄██████▄            ▄█    ▄████████  ▄████████    ▄█   ▄█▄    ▄████████    ▄████████ 
     ███    ███ ███    ███ ▀█████████▄ ███    ███          ███   ███    ███ ███    ███   ███ ▄███▀   ███    ███   ███    ███ 
     ███    ███ ███    ███    ▀███▀▀██ ███    ███          ███   ███    ███ ███    █▀    ███▐██▀     ███    █▀    ███    ███ 
@@ -21,19 +25,19 @@ tato= """
     ███    ███ ███    ███     ███     ███    ███          ███   ███    ███ ███    ███   ███ ▀███▄   ███    ███   ███    ███ 
     ███    █▀  ████████▀     ▄████▀    ▀██████▀       █▄ ▄███   ███    █▀  ████████▀    ███   ▀█▀   ██████████   ███    ███ 
                                                       ▀▀▀▀▀▀                            ▀                        ███    ███ 
-                                                                                                                                                                                                           
+                                        # WhiteHatJr AppSec Team #                                                                                                                                                        
 
 """
-print(Fore.MAGENTA + Style.BRIGHT+tato)
+print(Fore.MAGENTA + Style.BRIGHT+tato.center(20))
 program1= 'subfinder'
 program2 = 'httpx'
 check1 = subprocess. run(['which', program1], capture_output=True, text=True)
 check2 = subprocess. run(['which', program2], capture_output=True, text=True)
 if check1.returncode == 1:
-    print(f'subfinder is not installed. Make sure to run "brew install subfinder" if you are using mac OS.')
+    print('subfinder is not installed. Make sure to run "brew install subfinder" if you are using mac OS.')
     exit()
 if check2.returncode == 1:
-    print(f'httpx is not installed. Make sure to run "brew install httpx" if you are using mac OS.')
+    print('httpx is not installed. Make sure to run "brew install httpx" if you are using mac OS.')
     exit()
 domain = input("Domain: ")
 print('Warming up the engine, please wait...')
@@ -48,24 +52,20 @@ while True:
     try:
         url= str(subfile.readline())
         frame ='x-frame-options'
-        #print(str(count) + ". " + Fore.BLUE + url.strip())
         res= requests.get(url.strip(), verify=False)
         strheaders = str(res.headers)
         xfo = re.compile(r'(?i)(\'|\")?x-frame-options(\'|\")?(\s)*(\:)(\s)*(\'|\")?(sameorigin|deny)(\'|\")?')
         searched = xfo.search(strheaders)
-        #print(searched)
         strsearched =str(searched)
         if (frame.lower() not in strheaders.lower() ):
-            print(Fore.MAGENTA + str(count) + ". " + Fore.RED + url.strip() + " seems Vulnerable" + str(res.status_code))
+            print(Fore.MAGENTA + str(count) + ". " + Fore.RED + url.strip() + " seems Vulnerable." )
             print()
             vulcount +=1
-        
         elif (frame.lower() not in strsearched.lower() and frame.lower() in strheaders.lower() ):
-            print(Fore.MAGENTA + str(count) + ". " + Fore.CYAN + url.strip() + " seems Conditional. It needs manual inspection." + str(res.status_code))
-            print()
-            
+            print(Fore.MAGENTA + str(count) + ". " + Fore.CYAN + url.strip() + " seems Conditional. It needs manual inspection." )
+            print()     
         else:
-            print(Fore.MAGENTA + str(count) + ". " + Fore.GREEN + url.strip() + " does NOT seem Vulnerable" + str(res.status_code))
+            print(Fore.MAGENTA + str(count) + ". " + Fore.GREEN + url.strip() + " does NOT seem Vulnerable." )
             print()   
     except Exception:
         pass
